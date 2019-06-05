@@ -42,7 +42,7 @@ $ npm run dev
 
 ```
 
-# 文档相关
+# Documents
 
 - [Laravel 5.8集合 vue-element-admin 踩坑记](https://segmentfault.com/a/1190000019393275)
 
