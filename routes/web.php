@@ -11,11 +11,13 @@
 |
 */
 
+// 前台入口
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin', function () {
-    return view('admin');
+// 管理后台入口
+Route::get('/backend', function () {
+    return view('backend');
 });
 
