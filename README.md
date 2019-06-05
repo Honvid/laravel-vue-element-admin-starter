@@ -18,7 +18,7 @@
 
 this framework used the [laravel5.8](https://github.com/laravel/laravel), [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin), just a starter.
 
-# 版本
+# Versions
 
 - laravel 5.8
 - vue-element-admin i18n 分支
