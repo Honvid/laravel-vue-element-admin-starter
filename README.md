@@ -42,6 +42,10 @@ $ npm run dev
 
 ```
 
+open the browser, enter this url address to view.
+
+`http://you.domain.com/backend`
+
 # Documents
 
 - [Laravel 5.8集合 vue-element-admin 踩坑记](https://segmentfault.com/a/1190000019393275)
