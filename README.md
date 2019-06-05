@@ -16,7 +16,7 @@
 
 # laravel-vue-element-admin-starter
 
-this framework used the [laravel5.8](https://github.com/laravel/laravel), vue-element-admin, just a starter.
+this framework used the [laravel5.8](https://github.com/laravel/laravel), [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin), just a starter.
 
 # 版本
 
