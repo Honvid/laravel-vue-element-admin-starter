@@ -21,7 +21,7 @@ this framework used the [laravel5.8](https://github.com/laravel/laravel), [vue-e
 # Versions
 
 - laravel 5.8
-- vue-element-admin i18n 分支
+- vue-element-admin branch(i18n)
 
 # Getting Started
 
@@ -48,9 +48,9 @@ $ npm run dev
 
 # TODO
 
-- mock 接口用 laravel 实现
-- 用户管理
-- 菜单管理
+- mock api replace to laravel api
+- manager users
+- menus
 - ……
 
 ## Browsers Support
