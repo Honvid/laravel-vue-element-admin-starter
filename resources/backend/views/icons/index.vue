@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import clipboard from '@/utils/clipboard'
+import clipboard from 'common/utils/clipboard'
 import svgIcons from './svg-icons'
 import elementIcons from './element-icons'
 

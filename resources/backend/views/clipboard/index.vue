@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import clip from '@/utils/clipboard' // use clipboard directly
+import clip from 'common/utils/clipboard' // use clipboard directly
 import clipboard from '@/directive/clipboard/index.js' // use clipboard by v-directive
 
 export default {

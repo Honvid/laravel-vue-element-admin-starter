@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/article'
-import { parseTime } from '@/utils'
+import { fetchList } from 'common/api/article'
+import { parseTime } from 'common/utils'
 
 export default {
   name: 'MergeHeader',

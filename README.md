@@ -36,6 +36,10 @@ $ cp .env.example .env
 
 $ php artisan key:generate
 
+$ php artisan migrate
+
+$ php artisan passport:install
+
 $ npm install
 
 $ npm run dev
@@ -49,6 +53,11 @@ open the browser, enter this url address to view.
 # Documents
 
 - [Laravel 5.8集合 vue-element-admin 踩坑记](https://segmentfault.com/a/1190000019393275)
+
+# Package
+
+- [Laravel Passport](https://github.com/laravel/passport)
+- [overtrue/laravel-socialite](https://github.com/overtrue/laravel-socialite)
 
 # TODO
 
