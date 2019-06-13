@@ -1,4 +1,4 @@
-import store from '@/store'
+import store from 'common/store'
 
 export default {
   inserted(el, binding, vnode) {

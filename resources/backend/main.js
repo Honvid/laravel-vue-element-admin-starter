@@ -9,14 +9,14 @@ import './styles/element-variables.scss'
 
 import '@/styles/index.scss' // global css
 
-import App from './App'
-import store from './store'
+import App from './App.vue'
+import store from '../common/store'
 import router from './router'
 
-import i18n from './lang' // internationalization
+import i18n from '../common/lang' // internationalization
 import './icons' // icon
 import './permission' // permission control
-import './utils/error-log' // error log
+import '../common/utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 

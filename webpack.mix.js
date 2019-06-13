@@ -21,6 +21,9 @@ mix.webpackConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'resources/backend'),
+      '^': path.resolve(__dirname, 'resources/frontend'),
+      'common': path.resolve(__dirname, 'resources/common'),
+      'lang': path.resolve(__dirname, 'resources/common/lang'),
     }
   },
   module: {
@@ -39,10 +42,9 @@ mix.webpackConfig({
   plugins: ['dynamic-import-node']
 });
 
-mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
-
-mix.js('resources/backend/main.js', 'public/js').extract(['vue', 'axios']);
+mix.js('resources/frontend/app.js', 'public/js')
+  .js('resources/backend/main.js', 'public/js')
+  .extract(['vue', 'axios']);
 
 if (mix.inProduction()) {
   mix.version();

@@ -22,7 +22,7 @@
 // make search results more in line with expectations
 import Fuse from 'fuse.js'
 import path from 'path'
-import i18n from '@/lang'
+import i18n from 'common/lang'
 
 export default {
   name: 'HeaderSearch',
