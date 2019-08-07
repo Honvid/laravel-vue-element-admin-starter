@@ -41,6 +41,7 @@
                         ></avatar>
                         <!--<img :src="avatar" class="user-avatar" :title="name">-->
                     </template>
+                    <el-menu-item style="border-bottom: 1px solid #eee">{{ name }}</el-menu-item>
                     <el-menu-item index="/profile/index">{{ $t('navbar.profile') }}</el-menu-item>
                     <el-menu-item @click="logout" style="border-top: 1px solid #eee">{{ $t('navbar.logOut') }}</el-menu-item>
                 </el-submenu>
@@ -88,7 +89,7 @@
         'device'
       ]),
       loginStatus() {
-        return this.$store.getters.name.length > 0
+        return this.$store.getters.name && this.$store.getters.name.length > 0
       }
     },
     methods: {

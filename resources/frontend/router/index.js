@@ -11,7 +11,7 @@ Vue.use(VueRouter)
  * Makes a new VueRouter that we will use to run all of the routes for the app.
  */
 export default new VueRouter({
-  mode:"history",
+  mode: 'history', // require service support
   routes: [
     {
       path: '',

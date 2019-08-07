@@ -13,19 +13,20 @@ namespace App\Http\Controllers\Auth;
 |
 */
 
-use App\User;
-use Carbon\Carbon;
 use Hash;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Log;
+use App\User;
 use Socialite;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Traits\JsonResponseTrait;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class AuthenticationController
 {
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers, JsonResponseTrait;
 
     /**
      * 注册一个新用户
@@ -37,10 +38,10 @@ class AuthenticationController
     public function register(Request $request)
     {
         $request->validate([
-            'username'     => 'required|string',
+            'username' => 'required|string',
             'email'    => 'required|string|email|unique:users',
             'password' => 'required|string',
-            'confirm' => 'required|string'
+            'confirm'  => 'required|string'
         ]);
 
         $user = new User([
@@ -70,14 +71,10 @@ class AuthenticationController
         ]);
 
         if (!$this->attemptLogin($request)) {
-            return response()->json([
-                'message' => '3Unauthorized'
-            ], 401);
+            return $this->JsonResponse(null, "用户名或密码错误", 401);
         }
 
-        $user = $request->user();
-
-        return response()->json($this->getToken($request, $user));
+        return response()->json($this->getToken($request, $request->user()));
     }
 
     /**
@@ -152,10 +149,11 @@ class AuthenticationController
      */
     public function user(Request $request)
     {
-        $user = $request->user()->toArray();
-        //TODO 替换
-        $user['roles']        = ['admin'];
-        $user['introduction'] = 'I am a super administrator';
+        $abilities = $request->user()->abilities()->pluck('name')->all();
+        $roles     = $request->user()->roles()->pluck('name')->all();
+        $user      = $request->user()->toArray();
+        unset($user['roles'], $user['abilities']);
+        $user['permissions'] = array_merge($roles, $abilities);
 
         return response()->json($user);
     }
@@ -210,8 +208,8 @@ class AuthenticationController
 
         // 手动登录该用户
 
-        $tokenResult = $user->createToken('Personal Access Token');
-        $token       = $tokenResult->token;
+        $tokenResult       = $user->createToken('Personal Access Token');
+        $token             = $tokenResult->token;
         $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
 
@@ -224,7 +222,7 @@ class AuthenticationController
 
     /**
      * @param        $request
-     * @param        $user
+     * @param User   $user
      * @param string $message
      *
      * @return array
@@ -239,10 +237,12 @@ class AuthenticationController
 
         $token->save();
 
-        $user                 = $user->toArray();
-        $user['message']      = $message;
-        $user['roles']        = ['admin'];
-        $user['introduction'] = 'I am a super administrator';
+        $abilities = $user->abilities()->pluck('name')->all();
+        $roles     = $user->roles()->pluck('name')->all();
+        $user      = $user->toArray();
+        unset($user['roles'], $user['abilities']);
+        $user['permissions'] = array_merge($roles, $abilities);
+        $user['message'] = $message;
         //$user['avatar']       = 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif';
         $user['access_token'] = $tokenResult->accessToken;
         $user['token_type']   = 'Bearer';

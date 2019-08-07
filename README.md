@@ -26,7 +26,7 @@ this framework used the [laravel5.8](https://github.com/laravel/laravel), [vue-e
 # Getting Started
 
 ```
-$ git clone https://github.com/Honvid/laravel-vue-element-admin-starter.git
+$ git clone https://github.com/Honvid/personal.git
 
 $ cd laravel-vue-element-admin-starter
 
@@ -34,9 +34,13 @@ $ composer install
 
 $ cp .env.example .env
 
+# assign correct config for app. just like the databases's config, etc.
+
 $ php artisan key:generate
 
 $ php artisan migrate
+
+$ php artisan db:seed
 
 $ php artisan passport:install
 
@@ -62,8 +66,6 @@ open the browser, enter this url address to view.
 # TODO
 
 - mock api replace to laravel api
-- manager users
-- menus
 - ……
 
 ## Browsers Support

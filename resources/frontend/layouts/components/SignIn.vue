@@ -45,6 +45,11 @@
             <el-row>
                 <el-button circle><svg-icon icon-class="wechat" class="icon" /></el-button>
                 <el-button circle><svg-icon icon-class="qq" class="icon" /></el-button>
+                <a href="/oauth/github" target="_self">
+                    <el-button circle>
+                        <svg-icon icon-class="github" class="icon"/>
+                    </el-button>
+                </a>
                 <!--<el-button circle><svg-icon icon-class="github" class="icon" /></el-button>-->
                 <!--<el-button circle><svg-icon icon-class="facebook" class="icon" /></el-button>-->
                 <!--<el-button circle><svg-icon icon-class="weibo" class="icon" /></el-button>-->
@@ -122,14 +127,15 @@
         this.$refs.loginForm.validate(valid => {
           if (valid) {
             this.loading = true
-            this.$store.dispatch('user/login', this.loginForm)
-              .then(() => {
-                this.loading = false
+            this.$store.dispatch('user/login', this.loginForm).then(() => {
+              this.loading = false
+              this.closeDialog();
+            }).catch((error) => {
+              this.$message({
+                type: 'error',
+                message: error,
               })
-              .catch(() => {
-                this.loading = false
-              })
-            this.closeDialog();
+            })
           } else {
             console.log('error submit!!')
             return false

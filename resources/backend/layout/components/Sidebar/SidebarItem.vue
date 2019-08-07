@@ -1,23 +1,23 @@
 <template>
-  <div v-if="!item.hidden" class="menu-wrapper">
-    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
-      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
-        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="generateTitle(onlyOneChild.meta.title)" />
+  <div v-if="item.show" class="menu-wrapper">
+    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)">
+      <app-link v-if="onlyOneChild.title" :to="resolvePath(onlyOneChild.uri)">
+        <el-menu-item :index="resolvePath(onlyOneChild.uri)" :class="{'submenu-title-noDropdown':!isNest}">
+          <item :icon="onlyOneChild.icon||(item.icon)" :title="generateTitle(onlyOneChild.title)" />
         </el-menu-item>
       </app-link>
     </template>
 
-    <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
+    <el-submenu v-else ref="subMenu" :index="resolvePath(item.uri)" popper-append-to-body>
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="generateTitle(item.meta.title)" />
+        <item v-if="item.icon" :icon="item.icon" :title="generateTitle(item.title)" />
       </template>
       <sidebar-item
         v-for="child in item.children"
-        :key="child.path"
+        :key="child.uri"
         :is-nest="true"
         :item="child"
-        :base-path="resolvePath(child.path)"
+        :base-path="resolvePath(child.uri)"
         class="nest-menu"
       />
     </el-submenu>
@@ -60,7 +60,7 @@ export default {
   methods: {
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
-        if (item.hidden) {
+        if (!item.show) {
           return false
         } else {
           // Temp set(will be used if only has one showing child)

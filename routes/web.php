@@ -17,7 +17,7 @@ Route::get('/', function () {
 });
 
 // 管理后台入口
-Route::get('/backend', function () {
+Route::get('/backend',function (){
     return view('backend');
 });
 

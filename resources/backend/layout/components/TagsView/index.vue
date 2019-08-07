@@ -12,7 +12,7 @@
         @click.middle.native="closeSelectedTag(tag)"
         @contextmenu.prevent.native="openMenu(tag,$event)"
       >
-        {{ generateTitle(tag.title) }}
+        {{ generateTitle(tag.name) }}
         <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
@@ -55,7 +55,7 @@ export default {
       return this.$store.state.tagsView.visitedViews
     },
     routes() {
-      return this.$store.state.permission.routes
+      return this.$store.state.menu.backend
     }
   },
   watch: {
@@ -83,17 +83,24 @@ export default {
     filterAffixTags(routes, basePath = '/') {
       let tags = []
       routes.forEach(route => {
-        if (route.meta && route.meta.affix) {
-          const tagPath = path.resolve(basePath, route.path)
+        if (route.title && route.uri === "/dashboard") {
+          const tagPath = path.resolve(basePath, route.uri)
+          let meta = {
+            title: route.title,
+            affix: true
+          }
+          if(route.icon){
+            meta.icon = route.icon
+          }
           tags.push({
             fullPath: tagPath,
             path: tagPath,
-            name: route.name,
-            meta: { ...route.meta }
+            name: route.title,
+            meta: meta
           })
         }
         if (route.children) {
-          const tempTags = this.filterAffixTags(route.children, route.path)
+          const tempTags = this.filterAffixTags(route.children, route.uri)
           if (tempTags.length >= 1) {
             tags = [...tags, ...tempTags]
           }
@@ -104,7 +111,6 @@ export default {
     initTags() {
       const affixTags = this.affixTags = this.filterAffixTags(this.routes)
       for (const tag of affixTags) {
-        // Must have tag name
         if (tag.name) {
           this.$store.dispatch('tagsView/addVisitedView', tag)
         }
@@ -112,7 +118,7 @@ export default {
     },
     addTags() {
       const { name } = this.$route
-      if (name) {
+      if (name && name !== 'Dashboard') {
         this.$store.dispatch('tagsView/addView', this.$route)
       }
       return false
