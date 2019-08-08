@@ -115,6 +115,7 @@ class UserController extends Controller
         }
 
         $user = User::findOrFail($id);
+        $user->update($params);
         Bouncer::sync($user)->roles($request->input('roles', []));
 
         return $this->jsonResponse();
