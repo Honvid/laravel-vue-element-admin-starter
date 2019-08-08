@@ -26,7 +26,7 @@ this framework used the [laravel5.8](https://github.com/laravel/laravel), [vue-e
 # Getting Started
 
 ```
-$ git clone https://github.com/Honvid/personal.git
+$ git clone https://github.com/Honvid/laravel-vue-element-admin-starter.git
 
 $ cd laravel-vue-element-admin-starter
 
