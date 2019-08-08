@@ -1,8 +1,7 @@
 <template>
     <div class="navbar">
         <template v-if="device!=='mobile'">
-            <el-menu :default-active="activeIndex" :router="false" class="el-menu-demo" mode="horizontal"
-                     @select="handleSelect">
+            <el-menu :default-active="activeIndex" :router="true" class="el-menu-demo" mode="horizontal">
                 <el-menu-item index="1" class="search-box">
                     <el-autocomplete
                             class="inline-input"
@@ -25,7 +24,7 @@
                         <el-menu-item index="2-4-3">选项3</el-menu-item>
                     </el-submenu>
                 </el-submenu>
-                <el-menu-item index="3">消息中心</el-menu-item>
+                <el-menu-item><a href="/backend" style="text-decoration: none">管理后台</a></el-menu-item>
                 <el-menu-item index="4">订单管理</el-menu-item>
                 <el-menu-item index="sigin" @click="signIn" v-if="!loginStatus">登录</el-menu-item>
                 <el-menu-item index="signup" @click="signUp" v-if="!loginStatus">注册</el-menu-item>
@@ -41,6 +40,7 @@
                         ></avatar>
                         <!--<img :src="avatar" class="user-avatar" :title="name">-->
                     </template>
+                    <el-menu-item style="border-bottom: 1px solid #eee">{{ name }}</el-menu-item>
                     <el-menu-item index="/profile/index">{{ $t('navbar.profile') }}</el-menu-item>
                     <el-menu-item @click="logout" style="border-top: 1px solid #eee">{{ $t('navbar.logOut') }}</el-menu-item>
                 </el-submenu>
@@ -88,7 +88,7 @@
         'device'
       ]),
       loginStatus() {
-        return this.$store.getters.name.length > 0
+        return this.$store.getters.name && this.$store.getters.name.length > 0
       }
     },
     methods: {

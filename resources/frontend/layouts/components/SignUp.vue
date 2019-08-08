@@ -1,7 +1,8 @@
 <template>
     <el-dialog :title="$t('register.title')" customClass="register-container" width="520px" :visible="showDialog"
                @close="closeDialog">
-        <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="register-form" auto-complete="off">
+        <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="register-form"
+                 auto-complete="off">
             <el-form-item prop="username">
                 <span class="svg-container">
                   <svg-icon icon-class="user"/>
@@ -80,7 +81,7 @@
                       </span>
                 </el-form-item>
             </el-tooltip>
-            <el-button type="primary" class="register-btn" @click="handleSignUp">{{ $t('register.title') }}</el-button>
+            <el-button type="primary" class="register-btn" @click="handleSignUp">{{ $t('register.signup') }}</el-button>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-row>
@@ -90,7 +91,11 @@
                 <el-button circle>
                     <svg-icon icon-class="qq" class="icon"/>
                 </el-button>
-                <!--<el-button circle><svg-icon icon-class="github" class="icon" /></el-button>-->
+                <a href="/oauth/github" target="_self">
+                    <el-button circle>
+                        <svg-icon icon-class="github" class="icon"/>
+                    </el-button>
+                </a>
                 <!--<el-button circle><svg-icon icon-class="facebook" class="icon" /></el-button>-->
                 <!--<el-button circle><svg-icon icon-class="weibo" class="icon" /></el-button>-->
             </el-row>
@@ -151,9 +156,9 @@
               if (value.length === 0) {
                 callback(new Error(i18n.t('validate.password')))
               } else {
-                if(!validPwd(value)){
+                if (!validPwd(value)) {
                   callback(new Error(i18n.t('validate.password_error')))
-                }else {
+                } else {
                   callback()
                 }
               }
@@ -164,9 +169,9 @@
               if (value.length === 0) {
                 callback(new Error(i18n.t('validate.confirm')))
               } else {
-                if(value !== this.registerForm.password) {
+                if (value !== this.registerForm.password) {
                   callback(new Error(i18n.t('validate.confirm_error')))
-                }else {
+                } else {
                   callback()
                 }
               }
@@ -180,20 +185,20 @@
       }
     },
     computed: {
-      showDialog(){
-          return this.$store.getters.show_sign_up_dialog
+      showDialog() {
+        return this.$store.getters.show_sign_up_dialog
       },
       password() {
         return this.registerForm.password
       }
     },
     watch: {
-      password(newValue, oldValue){
-        if(newValue.length === 0){
+      password(newValue, oldValue) {
+        if (newValue.length === 0) {
           this.passwordLevel.small = 'background-color: #eee'
           this.passwordLevel.middle = 'background-color: #eee'
           this.passwordLevel.larger = 'background-color: #eee'
-        }else {
+        } else {
           let level = validPwdStrong(newValue)
           this.passwordLevel.small = level > 1 || level === 1 ? 'background-color: red' : 'background-color: #eee'
           this.passwordLevel.middle = level > 2 || level === 2 ? 'background-color: orange' : 'background-color: #eee'

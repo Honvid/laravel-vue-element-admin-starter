@@ -6,16 +6,12 @@ const state = {
   token: getToken(),
   name: '',
   avatar: '',
-  introduction: '',
-  roles: []
+  permissions: []
 }
 
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
-  },
-  SET_INTRODUCTION: (state, introduction) => {
-    state.introduction = introduction
   },
   SET_NAME: (state, name) => {
     state.name = name
@@ -23,8 +19,8 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-  SET_ROLES: (state, roles) => {
-    state.roles = roles
+  SET_PERMISSIONS: (state, permissions) => {
+    state.permissions = permissions
   }
 }
 
@@ -34,12 +30,15 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        const {access_token, roles, name, avatar, introduction } = response
+        if(response.code && response.code > 0) {
+          reject(response.message)
+          return
+        }
+        const {access_token, permissions, name, avatar } = response
         commit('SET_TOKEN', access_token)
-        commit('SET_ROLES', roles)
+        commit('SET_PERMISSIONS', permissions)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
         setToken(access_token)
         resolve()
       }).catch(error => {
@@ -56,13 +55,11 @@ const actions = {
         email: email.trim(),
         password: password,
         confirm: confirm }).then(response => {
-          console.log(response);
-        const {access_token, roles, name, avatar, introduction } = response
+        const {access_token, permissions, name, avatar } = response
         commit('SET_TOKEN', access_token)
-        commit('SET_ROLES', roles)
+        commit('SET_PERMISSIONS', permissions)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
         setToken(access_token)
         resolve()
       }).catch(error => {
@@ -75,24 +72,22 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
-        console.log(response)
         if (!response) {
           reject('Verification failed, please Login again.')
+          return
+        }
+        const { permissions, name, avatar } = response
+        if (!permissions || permissions.length <= 0) {
+          reject('getInfo: permissions must be a non-null array!')
+          return
         }
 
-        const { roles, name, avatar, introduction } = response
-
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
-        }
-
-        commit('SET_ROLES', roles)
+        commit('SET_PERMISSIONS', permissions)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
         resolve(response)
       }).catch(error => {
+        console.log(error)
         reject(error)
       })
     })
@@ -120,36 +115,11 @@ const actions = {
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
-      commit('SET_ROLES', [])
+      commit('SET_PERMISSIONS', [])
       removeToken()
       resolve()
     })
   },
-
-  // dynamically modify permissions
-  changeRoles({ commit, dispatch }, role) {
-    return new Promise(async resolve => {
-      const token = role + '-token'
-
-      commit('SET_TOKEN', token)
-      setToken(token)
-
-      const { roles } = await dispatch('getInfo')
-
-      resetRouter()
-
-      // generate accessible routes map based on roles
-      const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
-
-      // dynamically add accessible routes
-      router.addRoutes(accessRoutes)
-
-      // reset visited views and cached views
-      dispatch('tagsView/delAllViews', null, { root: true })
-
-      resolve()
-    })
-  }
 }
 
 export default {

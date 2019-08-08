@@ -15,15 +15,21 @@ Route::group([
     'prefix' => 'v1'
 ], function () {
     Route::group([
-        'prefix' => 'user'
+        'prefix' => 'users'
     ], function () {
-        Route::post('login', 'Auth\AuthenticationController@login')->name('user.login');
-        Route::post('register', 'Auth\AuthenticationController@register')->name('user.register');
+        Route::post('login', 'Auth\AuthenticationController@login');
+        Route::post('register', 'Auth\AuthenticationController@register');
         Route::get('logout', 'Auth\AuthenticationController@logout')
-            ->middleware('auth:api')
-            ->name('user.logout');;
+            ->middleware('auth:api');
         Route::get('info', 'Auth\AuthenticationController@user')
-            ->middleware('auth:api')
-            ->name('user.info');;
+            ->middleware('auth:api');
     });
+
+    Route::apiResource('users', 'UserController')->middleware('auth:api');
+    Route::apiResource('abilities', 'Auth\AbilityController')->middleware('auth:api');
+    Route::apiResource('roles', 'Auth\RoleController')->middleware('auth:api');
+    Route::apiResource('menus', 'MenuController')->middleware('auth:api');
+    Route::get('menu-list', 'MenuController@list')->middleware('auth:api');
+    Route::get('my-menu', 'MenuController@my')->middleware('auth:api');
+    Route::get('ability-groups', 'Auth\AbilityController@groups')->middleware('auth:api');
 });

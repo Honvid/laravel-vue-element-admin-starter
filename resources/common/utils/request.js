@@ -13,7 +13,6 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    console.log(store.getters.token,getToken())
     if (store.getters.token) {
       config.headers['Authorization'] = 'Bearer ' + getToken()
     }
@@ -67,7 +66,6 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
     Message({
       message: error.message,
       type: 'error',
